@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: <app-name>-migrations
+spec:
+  template:
+    spec:
+      containers:
+        - name: <app-name>
+          image: <image>:<tag>
+          command: ['python', 'manage.py', 'migrate']
+        # command: ['sh', 'run.sh']
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: <app-name>-credentials
+                  key: user
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: <app-name>-credentials
+                  key: password
+
+            - name: POSTGRES_HOST
+              value: <app-name>-service
+      restartPolicy: Never
+  backoffLimit: 5
