@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <app-name>-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <app-name>-db-container
+  template:
+    metadata:
+      labels:
+        app: <app-name>-db-container
+        tier: backend
+    spec:
+      containers:
+        - name: <app-name>-db-container
+          image: postgres:alpine
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: <app-name>-credentials
+                  key: user
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pos<app-name>tgres-credentials
+                  key: password
+
+            - name: POSTGRES_DB
+              value: kubernetes_django
+
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: <app-name>-volume-mount
+              mountPath: /var/lib/postgresql/data
+
+      volumes:
+        - name: <app-name>-volume-mount
+          persistentVolumeClaim:
+            claimName: <app-name>-pvc
