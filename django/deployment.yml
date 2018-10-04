@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <app-name>
+  labels:
+    app: <app-name>
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: <app-name>-container
+  template:
+    metadata:
+      labels:
+        app: <app-name>-container
+    spec:
+      containers:
+        - name: <app-name>
+          image: <image>:<tag>
+          ports:
+            - containerPort: 8000
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: <app-name>-credentials
+                  key: user
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: <app-name>-credentials
+                  key: password
+
+            - name: POSTGRES_HOST
+              value: <app-name>-service
