@@ -27,4 +27,31 @@ spec:
           volumeMounts: &mount
           - name: static
             mountPath: /static
-        
+        - name: <app-name>-static
+          image: nginx:alpine
+          resources:
+            requests:
+              cpu: 10m
+              memory: 30Mi
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - name: static
+            mountPath: /usr/share/nginx/html/static
+      initContainers:
+        - name: collectstatic
+          image: <image>:<tag>
+          command: ['python', 'manage.py', 'collectstatic', '--no-input']
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+          envFrom:
+            - secectRef:
+              name: <app-name>-credentials
+            - configMapRef:
+              name: <app-name>-configmap
+          volumeMounts: *mount
+      volumes:
+        - name: static
+          emptyDir: {}
