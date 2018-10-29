@@ -18,10 +18,10 @@ docker push username/django-app:1
 ## Deploy these containers to the Kubernetes cluster
 
 ### Config template file
-- Replace all <app-name> to name of your app.
+- Replace all `<app-name>` to name of your app.
 - Edit postgres/volume and postgres/volume_claim.
 - Edit configMap and Secrets in django/configmap and postgres/secrets.
-- Edit <Image>:<Tag> to your app image.
+- Edit `<Image>:<Tag>` to your app image.
 ### PostgreSQL
 ```
 cd postgres
