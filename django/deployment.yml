@@ -19,18 +19,12 @@ spec:
           image: <image>:<tag>
           ports:
             - containerPort: 8000
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: <app-name>-credentials
-                  key: user
-
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: <app-name>-credentials
-                  key: password
-
-            - name: POSTGRES_HOST
-              value: <app-name>-service
+          envFrom:
+            - secectRef:
+              name: <app-name>-credentials
+            - configMapRef:
+              name: <app-name>-configmap
+          volumeMounts: &mount
+          - name: static
+            mountPath: /static
+        
