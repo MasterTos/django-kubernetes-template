@@ -2,10 +2,8 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: <app-name>-pvc
-  labels:
-    type: local
 spec:
-storageClassName: local
+storageClassName: ""
   accessModes:
     - ReadWriteMany
   resources:

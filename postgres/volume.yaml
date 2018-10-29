@@ -2,14 +2,14 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: <app-name>-pv
-  labels:
-    type: local
 spec:
   capacity:
     storage: 2Gi
-  storageClassName: local
+  storageClassName: ""
   accessModes:
     - ReadWriteMany
-  hostPath:
-    path: /data/<app-name>-pv
+  nfs:
+    path: /
+    # FIXME: use the right IP or domain
+    server: <IP>
 
