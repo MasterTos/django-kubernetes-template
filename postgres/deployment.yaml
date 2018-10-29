@@ -16,21 +16,9 @@ spec:
       containers:
         - name: <app-name>-db-container
           image: postgres:alpine
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: <app-name>-credentials
-                  key: user
-
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: pos<app-name>tgres-credentials
-                  key: password
-
-            - name: POSTGRES_DB
-              value: kubernetes_django
+          envFrom:
+            - secretRef:
+              name: <app-name>-credentials
 
           ports:
             - containerPort: 5432

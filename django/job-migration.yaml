@@ -10,20 +10,10 @@ spec:
           image: <image>:<tag>
           command: ['python', 'manage.py', 'migrate']
         # command: ['sh', 'run.sh']
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: <app-name>-credentials
-                  key: user
-
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: <app-name>-credentials
-                  key: password
-
-            - name: POSTGRES_HOST
-              value: <app-name>-service
+          envFrom:
+            - secretRef:
+              name: <app-name>-credentials
+            - configMapRef:
+              name: <app-name>-configmap
       restartPolicy: Never
   backoffLimit: 5

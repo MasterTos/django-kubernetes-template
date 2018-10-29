@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 8000
           envFrom:
-            - secectRef:
+            - secretRef:
               name: <app-name>-credentials
             - configMapRef:
               name: <app-name>-configmap
@@ -47,7 +47,7 @@ spec:
               cpu: 10m
               memory: 100Mi
           envFrom:
-            - secectRef:
+            - secretRef:
               name: <app-name>-credentials
             - configMapRef:
               name: <app-name>-configmap
